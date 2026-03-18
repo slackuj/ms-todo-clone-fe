@@ -1,0 +1,88 @@
+/* The main wrapper with the shadow and border */
+.taskAdder-container {
+    background-color: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 1px solid #edebe9;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Top section: Plus icon and text input */
+.taskTitle-container {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    gap: 12px;
+}
+
+.add-task-icon {
+    font-size: 20px;
+    color: #2564cf; /* The signature blue */
+}
+
+.task-title {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 14px;
+    color: #323130;
+}
+
+.task-title::placeholder {
+    color: #2564cf;
+    opacity: 0.8;
+}
+
+/* Bottom section: Icons on left, 'Add' button on right */
+.taskActions-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: #faf9f8; /* Slightly darker bottom bar */
+    border-top: 1px solid #f3f2f1;
+    border-radius: 0 0 4px 4px;
+}
+
+.taskProperties-container {
+    display: flex;
+    gap: 8px;
+}
+
+/* Individual icon buttons (Date/Reminder) */
+.dateButton, .reminderButton {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    color: #605e5c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    font-size: 18px;
+    transition: background-color 0.1s;
+}
+
+.dateButton:hover, .reminderButton:hover {
+    background-color: #edebe9;
+    color: #323130;
+}
+
+/* The primary 'Add' button */
+.addTaskButton {
+    background-color: #ffffff;
+    border: 1px solid #edebe9;
+    color: #a19f9d; /* Starts greyed out until typing */
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.addTaskButton:hover {
+    background-color: #f3f2f1;
+}

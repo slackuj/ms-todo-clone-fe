@@ -1,0 +1,43 @@
+/* Container for the entire toolbar area */
+.tasksToolBar {
+    width: 100%;
+    padding: 16px 24px;
+    background-color: transparent; /* Matches the main content background */
+}
+
+/* Flex container to push the title to the left and options to the right */
+.tasksToolBarContainer {
+    display: flex;
+    align-items: center;
+}
+
+/* Title styling with Icon and Span */
+.listTitle {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Space between the calendar icon and text */
+    font-size: 20px;
+    font-weight: 600;
+    color: #2564cf; /* Signature Microsoft Blue */
+    margin: 0;
+}
+
+/* Target the icon specifically if it's a component or SVG */
+.listTitle svg {
+    font-size: 24px;
+}
+
+/* The "..." Options Icon */
+.listOptions {
+    cursor: pointer;
+    color: #605e5c; /* Neutral gray */
+    font-size: 18px;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.listOptions:hover {
+    background-color: #edebe9; /* Subtle hover effect */
+    color: #323130;
+}
