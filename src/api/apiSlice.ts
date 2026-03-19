@@ -1,6 +1,6 @@
 import {fetchBaseQuery} from "@reduxjs/toolkit/query";
 import {createApi} from "@reduxjs/toolkit/query/react";
-import type {NewTask, Task, TaskUpdateArgs} from "../types/tasks.ts";
+import type {NewTask, ServerTask, Task, TaskUpdateArgs} from "../types/tasks.ts";
 
 export const apiSlice = createApi({
     reducerPath: 'api',
@@ -11,13 +11,21 @@ export const apiSlice = createApi({
     endpoints: builder => ({
         getTasks: builder.query<Task[], void> ({
             query: () => '/tasks',
-            transformResponse: (response: {data: Task[]}) => response.data,
+            // takes ServerTask[] and returns Task[]
+            transformResponse: (response: {data: ServerTask[]}) => response.data.map(task =>
+                ({
+                    ...task,
+                    // converting 'string' date received from server into pure Date object before receiving the response !!!
+                    dueDate: task.dueDate ? new Date(task.dueDate).getTime() : undefined
+                })),
             providesTags: (result = [], _error, _arg) => ['Task', ...result.map(({id}) => ({type: 'Task', id }) as const)]
         }),
 
         getTask: builder.query<Task, string>({
             query: (id) => `/tasks/${id}`,
-            transformResponse: (response: { data: Task }) => response.data,
+            // takes ServerTask and returns Task
+            transformResponse: (response: { data: ServerTask }) => ({ ...response.data,
+                dueDate: response.data.dueDate ? new Date(response.data.dueDate).getTime() : undefined }),
             providesTags: (_result, _error, arg) => [{ type: 'Task', id: arg }]
         }),
 

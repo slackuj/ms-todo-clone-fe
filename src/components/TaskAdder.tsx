@@ -14,7 +14,7 @@ export const TaskAdder = () => {
             if (dueDate) {
             await addNewTask({
                 title: taskTitle,
-                dueDate: dueDate
+                dueDate: dueDate.getTime()
             });
             } else {
                 await addNewTask({

@@ -2,7 +2,7 @@ import {type ReactNode, useEffect } from 'react';
 import {createPortal} from 'react-dom';
 import './Modal.css';
 import {useAppDispatch, useAppSelector} from "../hooks/hooks.ts";
-import {closeModal, selectFocusedTask} from "../store/slices/modalsSlice.ts";
+import {closeModal, selectFocusedTask, selectIsModalOpen} from "../store/slices/modalsSlice.ts";
 import {GoStar, GoStarFill} from "react-icons/go";
 import { GoCircle } from "react-icons/go";
 import {Steps} from "./Steps.tsx";
@@ -11,6 +11,7 @@ export const Modal = () => {
 
     const dispatch = useAppDispatch();
     const task = useAppSelector(selectFocusedTask);
+    const isOpen = useAppSelector(selectIsModalOpen);
     // Close modal on 'Escape' key press
     useEffect(() => {
         const handleEsc = (event: KeyboardEvent) => {
@@ -22,7 +23,7 @@ export const Modal = () => {
         return () => window.removeEventListener('keydown', handleEsc);
     }, []);
 
-    if (!props.isOpen) return null;
+    if (!isOpen) return null;
 
     // createPortal takes two argument: (JSX, DOM node)
     // takes JSX and renders it inside the DOM node
@@ -43,7 +44,7 @@ export const Modal = () => {
                 <div className="task-steps">
                     <Steps />
                 </div>
-                <div className="add-to-myday">
+                <div className="task-dueDate">
                 </div>
             </div>
         </div>,

@@ -25,12 +25,12 @@ const GridRow = (props: GridRowProps) => {
         dispatch(focusTask(props.task));
     };
 
-    const dateToFormat = props.task.dueDate ? new Date(props.task.dueDate) : null;
+    //const dateToFormat = props.task.dueDate ? new Date(props.task.dueDate) : null;
     const dueDate = new Intl.DateTimeFormat("en-US", {
         month: "2-digit",
         day: "2-digit",
         year: "numeric"
-    }).format(dateToFormat ?? 0);
+    }).format(props.task.dueDate);
 
     const IMPORTANCE_ICON: Readonly<Record<string, ReactNode>> ={
         false: <GoStar/>,
@@ -66,7 +66,7 @@ export const TasksGrid = () => {
     const notDueDatedTasks = tasks.filter(task => !task.dueDate);
     const sortedTasks = dueDatedTasks.slice();
     sortedTasks.sort((a,b) => {
-        return a.dueDate!.getTime() - b.dueDate!.getTime()
+        return a.dueDate! - b.dueDate!;
     }
     );
     // push tasks without due dates into grid-rows first !

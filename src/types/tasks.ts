@@ -4,10 +4,9 @@ export interface Steps {
     isCompleted?: boolean;
 }
 
-export interface Task {
+interface BaseTask {
     id: string;
     title: string;
-    dueDate?: Date;
     isImportant?: boolean;
     isCompleted?: boolean;
     note?: string;
@@ -15,6 +14,15 @@ export interface Task {
     taskList?: string;
 }
 
+// task received from server
+export interface ServerTask extends BaseTask {
+    dueDate?: string; // ISO String from JSON.stringify
+}
+
+// task in Redux Store
+export interface Task extends BaseTask {
+    dueDate?: number; // Unix Timestamp !!!
+}
 export type NewTask = Omit<Task, 'id'>;
 export type TaskUpdate = Partial<NewTask>;
 export interface TaskUpdateArgs {

@@ -7,6 +7,7 @@ import {ImportantTasksPage} from "./features/important/ImportantTasksPage.tsx";
 import {PlannedTasksPage} from "./features/planned/PlannedTasksPage.tsx";
 import {AssignedTasksPage} from "./features/assigned/AssignedTasksPage.tsx";
 import {AllTasksPage} from "./features/allTasks/AllTasksPage.tsx";
+import {Modal} from "./components/Modal.tsx";
 
 export const App = () => {
 
@@ -24,6 +25,7 @@ export const App = () => {
               <Route path="/tasks/all" element={<AllTasksPage/>}/>
           </Routes>
               </div>
+              <Modal />
           </div>
       </>
   )

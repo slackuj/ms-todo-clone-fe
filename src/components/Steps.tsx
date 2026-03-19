@@ -2,7 +2,6 @@
 
 import {type ChangeEvent, type ReactNode, useState} from "react";
 import { IoAdd } from "react-icons/io5";
-import './Steps.css';
 import {useAppSelector} from "../hooks/hooks.ts";
 import {selectFocusedTask} from "../store/slices/modalsSlice.ts";
 import {GoCircle} from "react-icons/go";
@@ -30,6 +29,19 @@ const StepsAdder = () => {
             console.log('failed to add new step', error);
         }
     };*/
+    let addBtn: ReactNode;
+    if (stepTitle.trim() !== "") {
+        addBtn = (
+            <button
+                    className="addStepButton"
+                    /*disabled={!stepTitle.trim()}*/
+                    style={{ color: '#2564cf'}}
+                    /*onClick={handleAddNewStep}*/
+                >
+                    Add
+                </button>
+        );
+    }
 
     return (
         <div className="stepAdder-container">
@@ -42,16 +54,7 @@ const StepsAdder = () => {
                     value={stepTitle}
                     onChange={handleStepTitle}
                 />
-                if (!stepTitle.trim()) {
-                <button
-                    className="addStepButton"
-                    /*disabled={!stepTitle.trim()}*/
-                    style={{ color: '#2564cf'}}
-                    /*onClick={handleAddNewStep}*/
-                >
-                    Add
-                </button>
-            }
+                {addBtn}
             </div>
         </div>
     );

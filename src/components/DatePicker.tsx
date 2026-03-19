@@ -56,7 +56,6 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
                     className="hidden-date-input"
                     value={dateToString(selectedDate)}
                     min={todayStr} // Blocks selection of past dates
-                    title="" // Suppresses default browser tooltip
                     onChange={(e) => {
                         const val = e.target.value;
                         onDateChange(val ? new Date(val) : undefined);
