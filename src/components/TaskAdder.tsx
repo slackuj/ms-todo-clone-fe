@@ -1,30 +1,58 @@
+import { useState } from "react";
 import { IoAdd } from "react-icons/io5";
-import { IoNotificationsOutline } from "react-icons/io5";
-import { TbCalendarWeek } from "react-icons/tb";
+import { DatePicker } from "./DatePicker";
 import './TaskAdder.css';
-
+import {useAddNewTaskMutation} from "../api/apiSlice.ts";
 
 export const TaskAdder = () => {
+    const [taskTitle, setTaskTitle] = useState("");
+    const [dueDate, setDueDate] = useState<Date | undefined>(undefined);
+    const [addNewTask] = useAddNewTaskMutation();
+
+    const handleAddNewTask = async () => {
+        try {
+            if (dueDate) {
+            await addNewTask({
+                title: taskTitle,
+                dueDate: dueDate
+            });
+            } else {
+                await addNewTask({
+                    title: taskTitle
+                })
+            }
+        } catch (error) {
+            console.log('failed to add new task', error);
+        }
+    };
+
     return (
         <div className="taskAdder-container">
             <div className="taskTitle-container">
                 <IoAdd className="add-task-icon" />
-                <input className="task-title" type="text" placeholder="Add a task" />
+                <input
+                    className="task-title"
+                    type="text"
+                    placeholder="Add a task"
+                    value={taskTitle}
+                    onChange={(e) => setTaskTitle(e.target.value)}
+                />
             </div>
             <div className="taskActions-container">
                 <div className="taskProperties-container">
-                   <div className="dateButton-container">
-                       <button className="dateButton" title="Add due date">
-                           <TbCalendarWeek />
-                       </button>
-                   </div>
-                    <div className="reminderButton-container">
-                        <button className="reminderButton" title="Remind me">
-                            <IoNotificationsOutline />
-                        </button>
-                    </div>
+                    <DatePicker
+                        selectedDate={dueDate}
+                        onDateChange={setDueDate}
+                    />
                 </div>
-                <button className="addTaskButton">Add</button>
+                <button
+                    className="addTaskButton"
+                    disabled={!taskTitle.trim()}
+                    style={{ color: taskTitle.trim() ? '#2564cf' : '#a19f9d' }}
+                    onClick={handleAddNewTask}
+                >
+                    Add
+                </button>
             </div>
         </div>
     );

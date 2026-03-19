@@ -27,6 +27,7 @@ export const apiSlice = createApi({
                 method: 'POST',
                 body: newTask
             }),
+            transformResponse: (response: {data: Task}) => response.data,
             // applying optimistic update for adding new tasks to the cache
             // and also handling the true id returned from the server !!!
             async onQueryStarted(newTask, lifecycleApi) {
@@ -35,7 +36,8 @@ export const apiSlice = createApi({
                 const taskPatchResult = lifecycleApi.dispatch(
                     apiSlice.util.updateQueryData('getTasks', undefined, draft => {
                         //Object.assign(draft, NewTask);
-                        draft.push({ id: tempId, ...newTask});
+                        //  YOU ALSO NEED TO HANDLE EXTRA LISTS CASE
+                        draft.push({ id: tempId, ...newTask, isImportant: false});
                     })
                 );
 
@@ -108,3 +110,11 @@ export const apiSlice = createApi({
         })
     })
 });
+
+export const {
+    useGetTasksQuery,
+    useGetTaskQuery,
+    useAddNewTaskMutation,
+    useEditTaskMutation,
+    useDeleteTaskMutation
+} = apiSlice;
