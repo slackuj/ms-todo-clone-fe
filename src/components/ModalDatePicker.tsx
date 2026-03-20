@@ -1,14 +1,12 @@
-import React from 'react';
 import { TbCalendarWeek } from "react-icons/tb";
 import './DatePicker.css';
+import {useAppSelector} from "../hooks/hooks.ts";
+import {selectFocusedTask} from "../store/slices/modalsSlice.ts";
+import {GrClose} from "react-icons/gr";
 
-interface DatePickerProps {
-    selectedDate: Date | undefined;
-    onDateChange: (date: Date | undefined) => void;
-}
+export const ModalDatePicker = () => {
 
-export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChange }) => {
-
+    const task = useAppSelector(selectFocusedTask);
     // Convert Date object to YYYY-MM-DD string for the input
     const dateToString = (date: Date | undefined): string => {
         if (!date) return "";
@@ -19,7 +17,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
     const todayStr = new Date().toISOString().split('T')[0];
 
     const formatDate = (date: Date | undefined): string => {
-        if (!date) return "";
+        if (!date) return "Add due date";
 
         const today = new Date();
         const tomorrow = new Date();
@@ -41,26 +39,29 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
         });
     };
 
+    /*const handleChange = async () = {
+
+    };*/
+
     return (
-        <div className="datePicker-container">
+        <div className="ModalDatePicker-container">
             <div className="icon-wrapper" data-tooltip="Add due date">
                 <TbCalendarWeek className="date-icon" />
                 <input
                     type="date"
                     className="hidden-date-input"
-                    value={dateToString(selectedDate)}
+                    defaultValue={dateToString( task.dueDate ? new Date(task.dueDate) : undefined )}
                     min={todayStr} // Blocks selection of past dates
-                    onChange={(e) => {
+                    /*onChange={(e) => {
                         const val = e.target.value;
                         onDateChange(val ? new Date(val) : undefined);
-                    }}
+                    }}*/
                 />
             </div>
-            {selectedDate && (
                 <span className="display-date-text">
-                    {formatDate(selectedDate)}
+                    {formatDate(task.dueDate ? new Date(task.dueDate) : undefined)}
                 </span>
-            )}
+            {task.dueDate ? <GrClose /> : ''}
         </div>
     );
 };

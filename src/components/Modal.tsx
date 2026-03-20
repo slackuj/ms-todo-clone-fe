@@ -6,6 +6,9 @@ import {closeModal, selectFocusedTask, selectIsModalOpen} from "../store/slices/
 import {GoStar, GoStarFill} from "react-icons/go";
 import { GoCircle } from "react-icons/go";
 import {Steps} from "./Steps.tsx";
+import {ModalDatePicker} from "./ModalDatePicker.tsx";
+import { LuPanelRightClose } from "react-icons/lu";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 export const Modal = () => {
 
@@ -34,8 +37,8 @@ export const Modal = () => {
     };
 
     return createPortal(
-        <div className="modal-overlay" onClick={() => dispatch(closeModal())}>
-            <div className="task-details">
+        <div className="modal-overlay">
+            <div className="task-details" >
                 <div className="details-header">
                     <div><GoCircle/></div>
                     <h2 className="details-header">{task.title}</h2>
@@ -45,6 +48,14 @@ export const Modal = () => {
                     <Steps />
                 </div>
                 <div className="task-dueDate">
+                    <ModalDatePicker />
+                </div>
+                <div className="task-note">
+                    <textarea rows={5} cols={33} placeholder="Add note" />
+                </div>
+                <div className="modal-footer">
+                    <LuPanelRightClose />
+                    <RiDeleteBin6Line />
                 </div>
             </div>
         </div>,

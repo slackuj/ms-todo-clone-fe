@@ -25,7 +25,9 @@ export const App = () => {
               <Route path="/tasks/all" element={<AllTasksPage/>}/>
           </Routes>
               </div>
+              <div id="modal-root">
               <Modal />
+              </div>
           </div>
       </>
   )

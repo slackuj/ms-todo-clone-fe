@@ -34,6 +34,9 @@ export const TaskAdder = () => {
                     className="task-title"
                     type="text"
                     placeholder="Add a task"
+                    autoFocus
+                    autoCorrect="on"
+                    autoComplete="on"
                     value={taskTitle}
                     onChange={(e) => setTaskTitle(e.target.value)}
                 />
