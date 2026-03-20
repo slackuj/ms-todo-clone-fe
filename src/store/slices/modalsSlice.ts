@@ -13,7 +13,7 @@ const initialState: modalsState = {
         id: "",
         title: ""
     }
-}
+};
 
 const modalsSlice = createSlice({
     name: 'modals',
@@ -27,6 +27,10 @@ const modalsSlice = createSlice({
             state.focusedTask = action.payload;
             // display modal !!!
             state.isModalOpen = true;
+        },
+        updateFocusedTask: (state, action: PayloadAction<Task>) => {
+            // BECAUSE WE DON'T WANT TO TOGGLE MODAL WHEN USER TOGGLES TASK COMPLETION FROM TASKGRID
+            state.focusedTask = { ...state.focusedTask, ...action.payload };
         }
     }
 });
@@ -34,7 +38,8 @@ const modalsSlice = createSlice({
 // exporting generated action creators
 export const {
     closeModal,
-    focusTask
+    focusTask,
+    updateFocusedTask
 } = modalsSlice.actions;
 
 export default modalsSlice.reducer;

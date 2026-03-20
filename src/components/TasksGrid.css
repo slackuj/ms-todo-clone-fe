@@ -5,7 +5,7 @@
     border: 1px solid var(--border-color);
     margin-top: 10px;
     border-radius: 4px;
-    overflow: hidden;
+    overflow-y: auto;
 }
 
 .grid-row {

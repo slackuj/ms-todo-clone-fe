@@ -1,6 +1,9 @@
 import {fetchBaseQuery} from "@reduxjs/toolkit/query";
 import {createApi} from "@reduxjs/toolkit/query/react";
 import type {NewTask, ServerTask, Task, TaskUpdateArgs} from "../types/tasks.ts";
+import {selectFocusedTask, updateFocusedTask} from "../store/slices/modalsSlice.ts";
+import type {RootState} from "../store/store.ts";
+import {current} from "@reduxjs/toolkit";
 
 export const apiSlice = createApi({
     reducerPath: 'api',
@@ -77,12 +80,21 @@ export const apiSlice = createApi({
 
             // optimistic update
             async onQueryStarted(taskUpdateArgs, lifecycleApi) {
+                //const focusedTask = useAppSelector(selectFocusedTask);
+                const state = lifecycleApi.getState() as RootState;
+                const focusedTask = selectFocusedTask(state);
                 const postPatchResult = lifecycleApi.dispatch(
                     apiSlice.util.updateQueryData('getTasks', undefined, draft => {
-                        const task = draft.find(task => task.id === taskUpdateArgs.id);
-                        if (task) {
-                            Object.assign(task, { id: taskUpdateArgs.id, ...taskUpdateArgs.modifiedData });
-                            //task = { id: taskUpdateArgs.id, ...taskUpdateArgs.modifiedData };
+                        const taskIndex = draft.findIndex(t => t.id === taskUpdateArgs.id);
+                        if (taskIndex !== -1) {
+                            // Update the draft
+                            Object.assign(draft[taskIndex], taskUpdateArgs.modifiedData);
+
+                            // 2. Dispatch the plain object, NOT the proxy
+                            if (focusedTask) {
+                                const plainTask = current(draft[taskIndex]);
+                                lifecycleApi.dispatch(updateFocusedTask(plainTask));
+                            }
                         }
                     })
                 );
@@ -91,6 +103,8 @@ export const apiSlice = createApi({
                     await lifecycleApi.queryFulfilled;
                 } catch {
                     postPatchResult.undo();
+                    // rollback focusedTask
+                    if (focusedTask) lifecycleApi.dispatch(updateFocusedTask(focusedTask));
                 }
             }
         }),
