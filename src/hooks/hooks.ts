@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {closeModal} from "../store/slices/modalsSlice.ts";
 import {useEffect} from "react";
 import {useEditTaskMutation} from "../api/apiSlice.ts";
-import type {Task} from "../types/tasks.ts";
+import type {Step, Task, TaskUpdateArgs} from "../types/tasks.ts";
 
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 export const useAppSelector = useSelector.withTypes<RootState>();
@@ -20,33 +20,69 @@ export const useTasksUpdater = () => {
 
     const [updateTask] = useEditTaskMutation();
 
-    const toggleTaskCompletion = async (task: Task) => {
+    const UpdateTask = async(taskUpdateArgs: TaskUpdateArgs) => {
         try {
-            await updateTask({ id: task.id, modifiedData: { isCompleted: !task.isCompleted } });
+            await updateTask(taskUpdateArgs);
         } catch (error) {
-            console.error('failed updating task importance', error);
+            console.error(`failed updating task ${taskUpdateArgs} : error: ${error}`);
         }
+    };
+
+    const toggleTaskCompletion = async (task: Task) => {
+        await UpdateTask({ id: task.id, modifiedData: { isCompleted: !task.isCompleted } });
     };
 
     const toggleTaskImportance = async (task: Task) => {
-        try {
-            await updateTask({ id: task.id, modifiedData: { isImportant: !task.isImportant } });
-        } catch (error) {
-            console.error('failed updating task importance', error);
-        }
+        await UpdateTask({ id: task.id, modifiedData: { isImportant: !task.isImportant } });
     };
 
     const updateTaskTitle = async (taskId: string, title: string) => {
-        try {
-            await updateTask({ id: taskId, modifiedData: { title: title } });
-        } catch (error) {
-            console.error('failed updating task title', error);
+        await UpdateTask({ id: taskId, modifiedData: { title: title } });
+    };
+
+    const updateStepTitle = async (task: Task, stepId: string, stepTitle: string) => {
+        const updatedSteps = task.steps?.map((step) =>
+            step.id === stepId ? { ...step, title: stepTitle } : step);
+        if (updatedSteps){
+            await UpdateTask({ id: task.id, modifiedData: { steps: updatedSteps } });
+        }
+    };
+
+    const addNewStep = async (task: Task, stepTitle: string) => {
+        const newStep: Step = {
+            id: crypto.randomUUID(),
+            title: stepTitle,
+            isCompleted: false
+        };
+        const updatedSteps = task.steps ? [...task.steps, newStep] : [newStep];
+        await UpdateTask({ id: task.id, modifiedData: { steps: updatedSteps } });
+    };
+
+    const deleteStep = async (task: Task, stepId: string) => {
+        const updatedSteps = task.steps?.filter(step => step.id !== stepId);
+        if (updatedSteps){
+            await UpdateTask({ id: task.id, modifiedData: { steps: updatedSteps } });
+        }
+    };
+
+    const toggleStepCompletion = async (task: Task, stepId: string) => {
+        const updatedSteps = task.steps?.map((step) =>
+            // IF I AM NOT WRONG !!! --- CHECK AND UPDATE IF OTHERWISE
+            // !!step.isCompleted not required here, because in backend-> schema: step.isCompleted.default(false) forces to return steps.isCompleted as false
+            // similar to the response obtained for task.isCompleted and task.isImportant, as observed till now !!!
+            step.id === stepId ? { ...step, isCompleted: !step.isCompleted } : step);
+        if (updatedSteps){
+            await UpdateTask({ id: task.id, modifiedData: { steps: updatedSteps } });
         }
     };
 
     return {
         toggleTaskCompletion,
         updateTaskTitle,
-        toggleTaskImportance
+        toggleTaskImportance,
+        addNewStep,
+        updateStepTitle,
+        deleteStep,
+        toggleStepCompletion
     };
 };

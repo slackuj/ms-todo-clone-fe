@@ -1,40 +1,19 @@
-import React, {type ReactNode, useEffect } from 'react';
+import React, {useEffect } from 'react';
 import {createPortal} from 'react-dom';
 import './Modal.css';
 import {useAppDispatch, useAppSelector, useTasksUpdater} from "../hooks/hooks.ts";
-import {closeModal, selectFocusedTask, selectIsModalOpen} from "../store/slices/modalsSlice.ts";
-import {GoCheckCircle, GoCheckCircleFill, GoStar, GoStarFill} from "react-icons/go";
-import { GoCircle } from "react-icons/go";
+import {closeModal, selectIsModalOpen} from "../store/slices/modalsSlice.ts";
 import {Steps} from "./Steps.tsx";
 import {ModalDatePicker} from "./ModalDatePicker.tsx";
 import { LuPanelRightClose } from "react-icons/lu";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import classnames from "classnames";
+import {CompletionBtn} from "./CompletionBtn.tsx";
+import {ImportanceBtn} from "./ImportanceBtn.tsx";
+import {useFocusedTask} from "../api/apiSlice.ts";
 
 export const Modal = () => {
 
-    const dispatch = useAppDispatch();
-    const task = useAppSelector(selectFocusedTask);
-    const isOpen = useAppSelector(selectIsModalOpen);
-    const {
-        toggleTaskCompletion,
-        updateTaskTitle,
-        toggleTaskImportance
-    } = useTasksUpdater();
-
-    const handleTaskCompletion = async () => {
-        await toggleTaskCompletion(task);
-    };
-
-    const handleTaskImportance = async () => {
-        await toggleTaskImportance(task);
-    };
-
-    const handleTaskTitle = async(e: React.FocusEvent<HTMLHeadingElement>) => {
-        const title = e.currentTarget.textContent?.trim();
-        if (title && title !== task.title) {
-            await updateTaskTitle(task.id, title);
-        }
-    };
     // Close modal on 'Escape' key press
     useEffect(() => {
         const handleEsc = (event: KeyboardEvent) => {
@@ -45,32 +24,42 @@ export const Modal = () => {
         window.addEventListener('keydown', handleEsc);
         return () => window.removeEventListener('keydown', handleEsc);
     }, []);
+    const isOpen = useAppSelector(selectIsModalOpen);
+    const dispatch = useAppDispatch();
+    const {
+        updateTaskTitle,
+    } = useTasksUpdater();
+    const { task } = useFocusedTask();
+    if (!task) {
+        return null;
+    }
+
+    const handleTaskTitle = async(e: React.FocusEvent<HTMLHeadingElement>) => {
+        const title = e.currentTarget.textContent?.trim();
+        if (title && title !== task.title) {
+            await updateTaskTitle(task.id, title);
+        }
+    };
+
 
     if (!isOpen) return null;
-    const IMPORTANCE_ICON = new Map<Boolean, ReactNode>([
-        [false, <GoStar onClick={handleTaskImportance} className="not-important"/>],
-        [true, <GoStarFill className="important" onClick={handleTaskImportance} />]
-    ]);
-
-    const TASK_COMPLETE_ICON = new Map<Boolean, ReactNode>([
-        [false, <div className="task-incomplete-container"><GoCircle onClick={handleTaskCompletion}  className="task-incomplete-circle"/><GoCheckCircle onClick={handleTaskCompletion} className="task-incomplete-hover-circle"/></div>],
-        [true, <GoCheckCircleFill onClick={handleTaskCompletion} className="task-complete-circle"/>]
-    ]);
+    const titleClassname = classnames('task-completed-title', { disabled: !task.isCompleted});
 
     // createPortal takes two argument: (JSX, DOM node)
     // takes JSX and renders it inside the DOM node
+    //console.log(task.steps);
     return createPortal(
         <div className="modal-overlay">
             <div className="task-details" >
                 <div className="details-header">
-                    <div>{TASK_COMPLETE_ICON.get(!!task.isCompleted)}</div>
+                    <div><CompletionBtn task={task} /></div>
                     <h2
-                        className="details-header"
+                        className={titleClassname + " details-header"}
                         contentEditable={true}
                         suppressContentEditableWarning={true}
                         onBlur={handleTaskTitle}
                     >{task.title}</h2>
-                    <div>{IMPORTANCE_ICON.get(!!task.isImportant)}</div>
+                    <div><ImportanceBtn task={task} /></div>
                 </div>
                 <div className="task-steps">
                     <Steps />

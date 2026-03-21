@@ -1,16 +1,16 @@
-export interface Steps {
-    id: number;
+export interface Step {
+    id: string;
     title: string;
-    isCompleted?: boolean;
+    isCompleted: boolean;
 }
 
 interface BaseTask {
     id: string;
     title: string;
-    isImportant?: boolean;
-    isCompleted?: boolean;
+    isImportant: boolean;
+    isCompleted: boolean;
     note?: string;
-    steps?: Steps[];
+    steps?: Step[];
     taskList?: string;
 }
 

@@ -14,11 +14,15 @@ export const TaskAdder = () => {
             if (dueDate) {
             await addNewTask({
                 title: taskTitle,
-                dueDate: dueDate.getTime()
+                dueDate: dueDate.getTime(),
+                isImportant: false,
+                isCompleted: false
             });
             } else {
                 await addNewTask({
-                    title: taskTitle
+                    title: taskTitle,
+                    isImportant: false,
+                    isCompleted: false
                 })
             }
         } catch (error) {

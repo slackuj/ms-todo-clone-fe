@@ -1,9 +1,8 @@
 import {fetchBaseQuery} from "@reduxjs/toolkit/query";
 import {createApi} from "@reduxjs/toolkit/query/react";
 import type {NewTask, ServerTask, Task, TaskUpdateArgs} from "../types/tasks.ts";
-import {selectFocusedTask, updateFocusedTask} from "../store/slices/modalsSlice.ts";
-import type {RootState} from "../store/store.ts";
-import {current} from "@reduxjs/toolkit";
+import { selectFocusedTaskId } from "../store/slices/modalsSlice.ts";
+import {useAppSelector} from "../hooks/hooks.ts";
 
 export const apiSlice = createApi({
     reducerPath: 'api',
@@ -48,7 +47,7 @@ export const apiSlice = createApi({
                     apiSlice.util.updateQueryData('getTasks', undefined, draft => {
                         //Object.assign(draft, NewTask);
                         //  YOU ALSO NEED TO HANDLE EXTRA LISTS CASE
-                        draft.push({ id: tempId, ...newTask, isImportant: false});
+                        draft.push({ id: tempId, ...newTask, isImportant: false, isCompleted: false});
                     })
                 );
 
@@ -80,31 +79,92 @@ export const apiSlice = createApi({
 
             // optimistic update
             async onQueryStarted(taskUpdateArgs, lifecycleApi) {
-                //const focusedTask = useAppSelector(selectFocusedTask);
-                const state = lifecycleApi.getState() as RootState;
-                const focusedTask = selectFocusedTask(state);
+
+
+                //const state = lifecycleApi.getState() as RootState;
+                //const focusedTask = selectFocusedTask(state);
                 const postPatchResult = lifecycleApi.dispatch(
                     apiSlice.util.updateQueryData('getTasks', undefined, draft => {
-                        const taskIndex = draft.findIndex(t => t.id === taskUpdateArgs.id);
-                        if (taskIndex !== -1) {
+                        const task = draft.find(t => t.id === taskUpdateArgs.id);
+                        if (task) {
                             // Update the draft
-                            Object.assign(draft[taskIndex], taskUpdateArgs.modifiedData);
+                            Object.assign(task, taskUpdateArgs.modifiedData);
+/*
 
-                            // 2. Dispatch the plain object, NOT the proxy
-                            if (focusedTask) {
-                                const plainTask = current(draft[taskIndex]);
-                                lifecycleApi.dispatch(updateFocusedTask(plainTask));
+
+                            // focusedTask inside this block === current focusedTask
+
+
+
+
+                            // Get FRESH state
+                            const currentState = lifecycleApi.getState() as RootState;
+                            const focusedTask = selectFocusedTask(currentState);
+                  */          // because task completion/importance can be toggled even if it is not focused (i.e in modal)
+                            // also task title to be made editable later... just as in MS To Do app !!!
+                   /*         if (focusedTask && focusedTask.id === taskUpdateArgs.id) {
+                                console.log(`updating focused task on updateQueryData:\n
+                                `
+                            );
+                                console.log(task.steps);
+                                console.log(focusedTask.steps);
+                                lifecycleApi.dispatch(updateFocusedTask(current(task)));
                             }
-                        }
+                    */    }
                     })
                 );
 
                 try {
                     await lifecycleApi.queryFulfilled;
+                    /*// H A N D L E   S T E P S  U P D A T E S
+                    if ("steps" in taskUpdateArgs.modifiedData){
+                        lifecycleApi.dispatch(
+                            apiSlice.util.updateQueryData('getTasks', undefined, draft => {
+                                const task = draft.find(task => task.id === taskUpdateArgs.id);
+                                // skip if task steps is empty due to deletion (undefined)
+                                // task.steps?.length allows us to ensure that updatedTaskFromServer is not empty (or undefined) !!!
+                                if (task && task.steps?.length){
+                                    // UPDATE STEPS FOR EVENTUALLY UPDATING TEMPID OF NEW STEP IF NEW STEP WAS ADDED
+                                    // i.e skip if steps were updated or deleted only ( no new step added )
+
+
+
+                                    // focusedTask inside this block === current focusedTask
+
+
+
+                                    // Get FRESH state
+                                    const currentState = lifecycleApi.getState() as RootState;
+                                    const focusedTask = selectFocusedTask(currentState);
+                                    if (focusedTask.steps?.length && task.steps.length > focusedTask.steps.length){
+                                        task.steps = updatedTaskFromServer.steps;
+                                        //if (focusedTask){
+                                        // irrelevant for now , because task steps are only updatable via modal
+                                        console.log(`updating focused task after queryFulfilled:\n
+                                `
+                                        );
+                                        console.log(task.steps);
+                                        console.log(focusedTask.steps);
+                                        lifecycleApi.dispatch(updateFocusedTask(current(task)));
+                                       // }
+                                    }
+                     */
+                      /*      })
+                        )
+                    }*/
                 } catch {
                     postPatchResult.undo();
-                    // rollback focusedTask
-                    if (focusedTask) lifecycleApi.dispatch(updateFocusedTask(focusedTask));
+
+
+                    // focusedTask inside this block === old focusedTask defined on onQueryStarted
+
+
+
+
+                    /*// rollback focusedTask
+                    if (focusedTask && focusedTask.id === taskUpdateArgs.id) {
+                        lifecycleApi.dispatch(updateFocusedTask(focusedTask));
+                    }*/
                 }
             }
         }),
@@ -140,3 +200,14 @@ export const {
     useEditTaskMutation,
     useDeleteTaskMutation
 } = apiSlice;
+
+export const useFocusedTask = () => {
+    const focusedTaskId = useAppSelector(selectFocusedTaskId);
+    return useGetTasksQuery(undefined, {
+        selectFromResult: ({ data, isLoading, isError }) => ({
+            task: data?.find(task => task.id === focusedTaskId),
+            isLoading,
+            isError
+        })
+    });
+};

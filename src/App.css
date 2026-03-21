@@ -72,3 +72,11 @@
     color: var(--text-main);
     transition: all 0.2s ease-in-out;
 }
+
+.task-completed-title, .step-completed-title {
+    text-decoration: line-through;
+}
+
+.task-completed-title.disabled, .step-completed-title.disabled {
+    text-decoration: none;
+}

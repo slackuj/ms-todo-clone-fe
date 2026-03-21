@@ -1,10 +1,12 @@
 import './TasksGrid.css';
 import type {Task} from "../types/tasks.ts";
-import {GoCheckCircle, GoCheckCircleFill, GoCircle, GoStar, GoStarFill} from "react-icons/go";
 import type {ReactNode} from "react";
 import {useGetTasksQuery} from "../api/apiSlice.ts";
-import {useAppDispatch, useTasksUpdater} from "../hooks/hooks.ts";
+import {useAppDispatch} from "../hooks/hooks.ts";
 import {focusTask} from "../store/slices/modalsSlice.ts";
+import classnames from "classnames";
+import {CompletionBtn} from "./CompletionBtn.tsx";
+import {ImportanceBtn} from "./ImportanceBtn.tsx";
 
 interface GridRowProps {
     task: Task;
@@ -21,21 +23,8 @@ const GridHeader = () => (
 
 const GridRow = (props: GridRowProps) => {
     const dispatch = useAppDispatch();
-    const {
-        toggleTaskCompletion,
-        toggleTaskImportance
-    } = useTasksUpdater();
-
     const handleFocusTask = () => {
-        dispatch(focusTask(props.task));
-    };
-
-    const handleTaskCompletion = async () => {
-        await toggleTaskCompletion(props.task);
-    };
-
-    const handleTaskImportance = async () => {
-        await toggleTaskImportance(props.task);
+        dispatch(focusTask(props.task.id));
     };
 
     //const dateToFormat = props.task.dueDate ? new Date(props.task.dueDate) : null;
@@ -45,22 +34,14 @@ const GridRow = (props: GridRowProps) => {
         year: "numeric"
     }).format(props.task.dueDate);
 
-    const IMPORTANCE_ICON = new Map<Boolean, ReactNode>([
-        [false, <GoStar className="not-important" onClick={handleTaskImportance}/>],
-        [true, <GoStarFill className="important" onClick={handleTaskImportance}/>]
-    ]);
-
-    const TASK_COMPLETE_ICON = new Map<Boolean, ReactNode>([
-        [false, <div className="task-incomplete-container"><GoCircle onClick={handleTaskCompletion}  className="task-incomplete-circle"/><GoCheckCircle onClick={handleTaskCompletion} className="task-incomplete-hover-circle"/></div>],
-        [true, <GoCheckCircleFill onClick={handleTaskCompletion} className="task-complete-circle"/>]
-    ]);
+    const titleClassname = classnames('task-completed-title', { disabled: !props.task.isCompleted});
 
     return (
         <div className="grid-row" key={props.task.id}>
-            <div>{TASK_COMPLETE_ICON.get(!!props.task.isCompleted)}</div>
-            <div onClick={handleFocusTask}>{props.task.title}</div>
+            <div><CompletionBtn task={props.task} /></div>
+            <div className={titleClassname} onClick={handleFocusTask}>{props.task.title}</div>
             <div>{props.task.dueDate ? dueDate : ''}</div>
-            <div>{IMPORTANCE_ICON.get(!!props.task.isImportant)}</div>
+            <div><ImportanceBtn task={props.task} /></div>
         </div>
     );
 };

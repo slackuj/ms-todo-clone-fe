@@ -96,28 +96,3 @@
     to { width: 360px; opacity: 1; }
 }
 
-.task-incomplete-container{
-    position: relative;
-    display: inline-flex;
-}
-.task-incomplete-hover-circle {
-    display: none;
-}
-.task-incomplete-circle {
-    display: block;
-    cursor: pointer;
-}
-.task-incomplete-container:hover .task-incomplete-hover-circle {
-    display: block;
-    cursor: pointer;
-}
-.task-incomplete-container:hover .task-incomplete-circle {
-    display: none;
-}
-.task-complete-circle, .important {
-    color: #2564cf;
-    cursor: pointer;
-}
-.not-important {
-    cursor: pointer;
-}

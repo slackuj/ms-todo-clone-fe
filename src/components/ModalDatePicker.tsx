@@ -1,12 +1,14 @@
 import { TbCalendarWeek } from "react-icons/tb";
 import './DatePicker.css';
-import {useAppSelector} from "../hooks/hooks.ts";
-import {selectFocusedTask} from "../store/slices/modalsSlice.ts";
 import {GrClose} from "react-icons/gr";
+import {useFocusedTask} from "../api/apiSlice.ts";
 
 export const ModalDatePicker = () => {
 
-    const task = useAppSelector(selectFocusedTask);
+    const { task } = useFocusedTask();
+    if (!task) {
+        return null;
+    }
     // Convert Date object to YYYY-MM-DD string for the input
     const dateToString = (date: Date | undefined): string => {
         if (!date) return "";
