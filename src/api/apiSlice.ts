@@ -18,7 +18,7 @@ export const apiSlice = createApi({
                 ({
                     ...task,
                     // converting 'string' date received from server into pure Date object before receiving the response !!!
-                    dueDate: task.dueDate ? new Date(task.dueDate).getTime() : undefined
+                    dueDate: task.dueDate ? new Date(task.dueDate).getTime() : null
                 })),
             providesTags: (result = [], _error, _arg) => ['Task', ...result.map(({id}) => ({type: 'Task', id }) as const)]
         }),
@@ -27,7 +27,7 @@ export const apiSlice = createApi({
             query: (id) => `/tasks/${id}`,
             // takes ServerTask and returns Task
             transformResponse: (response: { data: ServerTask }) => ({ ...response.data,
-                dueDate: response.data.dueDate ? new Date(response.data.dueDate).getTime() : undefined }),
+                dueDate: response.data.dueDate ? new Date(response.data.dueDate).getTime() : null }),
             providesTags: (_result, _error, arg) => [{ type: 'Task', id: arg }]
         }),
 

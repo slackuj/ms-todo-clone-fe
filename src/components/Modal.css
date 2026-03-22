@@ -96,6 +96,6 @@
     to { width: 360px; opacity: 1; }
 }
 
-.delete-btn, .delete-step-btn{
+.delete-btn, .delete-step-btn, .hide-modal-btn{
     cursor: pointer;
 }

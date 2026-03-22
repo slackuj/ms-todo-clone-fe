@@ -1,12 +1,13 @@
 import './TasksGrid.css';
 import type {Task} from "../types/tasks.ts";
 import type {ReactNode} from "react";
-import {useGetTasksQuery} from "../api/apiSlice.ts";
 import {useAppDispatch} from "../hooks/hooks.ts";
 import {focusTask} from "../store/slices/modalsSlice.ts";
 import classnames from "classnames";
 import {CompletionBtn} from "./CompletionBtn.tsx";
 import {ImportanceBtn} from "./ImportanceBtn.tsx";
+import type {SerializedError} from "@reduxjs/toolkit";
+import type {FetchBaseQueryError} from "@reduxjs/toolkit/query";
 
 interface GridRowProps {
     task: Task;
@@ -32,7 +33,7 @@ const GridRow = (props: GridRowProps) => {
         month: "2-digit",
         day: "2-digit",
         year: "numeric"
-    }).format(props.task.dueDate);
+    }).format(props.task.dueDate ?? undefined);
 
     const titleClassname = classnames('task-completed-title', { disabled: !props.task.isCompleted});
 
@@ -46,24 +47,23 @@ const GridRow = (props: GridRowProps) => {
     );
 };
 
-export const TasksGrid = () => {
-    let gridRows: ReactNode;
-    const {
-        data: tasks = [],
-        isLoading,
-        //isFetching,
-        isSuccess,
-        isError,
-        error
-    } = useGetTasksQuery();
+interface TaskGridProps {
+    tasks: Task[];
+    isLoading: boolean;
+    isSuccess: boolean;
+    isError: boolean;
+    error:  FetchBaseQueryError | SerializedError | undefined;
+}
 
-    if(isLoading) {
+export const TasksGrid = (props: TaskGridProps) => {
+    let gridRows: ReactNode;
+    if(props.isLoading) {
         gridRows = <div>Loading...</div>;
-    } else if (isSuccess) {
+    } else if (props.isSuccess) {
     //    console.log(tasks);
     // dissociate tasks into tasks having due date and the others
-    const dueDatedTasks = tasks.filter(task => task.dueDate);
-    const notDueDatedTasks = tasks.filter(task => !task.dueDate);
+    const dueDatedTasks = props.tasks.filter(task => task.dueDate);
+    const notDueDatedTasks = props.tasks.filter(task => !task.dueDate);
     const sortedTasks = dueDatedTasks.slice();
     sortedTasks.sort((a,b) => {
         return a.dueDate! - b.dueDate!;
@@ -73,8 +73,8 @@ export const TasksGrid = () => {
     const renderedNotDueDatedTasks = notDueDatedTasks.map(task => <GridRow key={task.id} task={task} />);
     const renderedDueDatedTasks = dueDatedTasks.map(task => <GridRow key={task.id} task={task} />);
     gridRows = renderedNotDueDatedTasks.concat(renderedDueDatedTasks);
-    } else if (isError) {
-        gridRows = <div>{error.toString()}</div>
+    } else if (props.isError && props.error) {
+        gridRows = <div>{props.error.toString()}</div>
     }
     return (
         <div className="grid-container">

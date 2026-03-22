@@ -29,10 +29,12 @@ export const Modal = () => {
 
     const {
         updateTaskTitle,
+        updateTaskNote,
     } = useTasksUpdater();
 
     const {
-        toggleDialogBox
+        toggleDialogBox,
+        closeTaskModal: handleCloseModal
     } = useModal();
 
     const { task } = useFocusedTask();
@@ -44,6 +46,13 @@ export const Modal = () => {
         const title = e.currentTarget.textContent?.trim();
         if (title && title !== task.title) {
             await updateTaskTitle(task.id, title);
+        }
+    };
+
+    const handleTaskNote = async(e: React.FocusEvent<HTMLTextAreaElement>) => {
+        const note = e.currentTarget.value?.trim();
+        if (note && note !== task.note) {
+            await updateTaskNote(task.id, note);
         }
     };
 
@@ -78,10 +87,22 @@ export const Modal = () => {
                     <ModalDatePicker />
                 </div>
                 <div className="task-note">
-                    <textarea rows={5} cols={33} placeholder="Add note" />
+                    <textarea
+                        key={task.id}
+                        rows={5} cols={33}
+                        placeholder="Add note"
+                        onBlur={handleTaskNote}
+                        autoCorrect="on"
+                        autoComplete="on"
+                    >
+                        {task.note}
+                    </textarea>
                 </div>
                 <div className="modal-footer">
-                    <LuPanelRightClose />
+                    <LuPanelRightClose
+                        className="hide-modal-btn"
+                        onClick={handleCloseModal}
+                    />
                     <RiDeleteBin6Line
                         className="delete-btn"
                         onClick={handleDeletion}

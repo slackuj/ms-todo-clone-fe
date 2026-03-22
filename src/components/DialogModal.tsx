@@ -43,6 +43,7 @@ export const DialogModal = () => {
         } else {
             await deleteTask(task.id);
         }
+        toggleDialogBox(undefined);
     };
 
     const handleCancel = () => {

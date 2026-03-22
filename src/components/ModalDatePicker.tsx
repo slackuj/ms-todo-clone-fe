@@ -15,9 +15,14 @@ export const ModalDatePicker = () => {
 
     const handleDateChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        const dueDate = value ? new Date(value).getTime() : undefined;
+        const dueDate = value ? new Date(value).getTime() : null;
         await updateTaskDueDate(task.id, dueDate);
     };
+
+    const handleDateDeletion = async() => {
+        await updateTaskDueDate(task.id, null);
+    }
+
     // Convert Date object to YYYY-MM-DD string for the input
     const dateToString = (date: Date | undefined): string => {
         if (!date) return "";
@@ -69,7 +74,7 @@ export const ModalDatePicker = () => {
                 <span className="display-date-text">
                     {formatDate(task.dueDate ? new Date(task.dueDate) : undefined)}
                 </span>
-            {task.dueDate ? <GrClose /> : ''}
+            {task.dueDate ? <GrClose onClick={handleDateDeletion} /> : ''}
         </div>
     );
 };

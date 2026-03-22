@@ -16,12 +16,12 @@ interface BaseTask {
 
 // task received from server
 export interface ServerTask extends BaseTask {
-    dueDate?: string; // ISO String from JSON.stringify
+    dueDate: string | null; // ISO String from JSON.stringify
 }
 
 // task in Redux Store
 export interface Task extends BaseTask {
-    dueDate: number | undefined; // Unix Timestamp !!!
+    dueDate: number | null; // Unix Timestamp !!!
 }
 export type NewTask = Omit<Task, 'id'>;
 export type TaskUpdate = Partial<NewTask>;

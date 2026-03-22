@@ -13,10 +13,12 @@ export const TaskAdder = () => {
         try {
             await addNewTask({
                 title: taskTitle,
-                dueDate: dueDate?.getTime(),
+                dueDate: dueDate?.getTime() ?? null,
                 isImportant: false,
                 isCompleted: false
             });
+            setTaskTitle("");
+            setDueDate(undefined);
         } catch (error) {
             console.log('failed to add new task', error);
         }

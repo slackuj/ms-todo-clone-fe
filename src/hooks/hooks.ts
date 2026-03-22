@@ -31,11 +31,16 @@ export const useModal = () => {
         dispatch(toggleDialogModal(stepId));
     };
 
+    const closeTaskModal = () => {
+        dispatch(closeModal());
+    };
+
     return{
         deletingStep,
         focusedStepId,
         isDialogBoxOpen,
-        toggleDialogBox
+        toggleDialogBox,
+        closeTaskModal
     };
 }
 
@@ -63,7 +68,11 @@ export const useTasksUpdater = () => {
         await UpdateTask({ id: taskId, modifiedData: { title: title } });
     };
 
-    const updateTaskDueDate = async (taskId: string, date: number | undefined) => {
+    const updateTaskNote = async (taskId: string, note: string) => {
+        await UpdateTask({ id: taskId, modifiedData: { note: note } });
+    };
+
+    const updateTaskDueDate = async (taskId: string, date: number | null) => {
         await UpdateTask({ id: taskId, modifiedData: { dueDate: date } });
     };
 
@@ -106,6 +115,7 @@ export const useTasksUpdater = () => {
     return {
         toggleTaskCompletion,
         updateTaskTitle,
+        updateTaskNote,
         updateTaskDueDate,
         toggleTaskImportance,
         addNewStep,
