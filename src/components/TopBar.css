@@ -1,49 +1,85 @@
+/* Container styling from TopBar.tsx */
+.topbar {
+    width: 100%;
+    z-index: 100;
+}
+
 .app-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
-    padding: 10px 20px;
-    background-color: #2564cf;
+    height: 48px; /* Standard Office 365 header height */
+    padding: 0 16px;
+    background-color: #2564cf; /* Microsoft Blue */
+    color: white;
+}
+
+/* Logo and Title Section */
+.app-header a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    gap: 12px;
+    min-width: 234px; /* Matches sidebar width minus padding */
 }
 
 .header__title {
-    font-size: medium;
-    font-weight: bold;
-    color: white;
-
-}
-.favicon{
-    height: 40px;
-    width: 40px;
-}
-
-.theme-button {
-    padding: 8px 16px;
-    cursor: pointer;
-    border-radius: 20px;
-    border: 1px solid var(--border-color);
-    background-color: var(--btn-secondary-bg);
-    color: var(--text-main);
+    font-size: 16px;
     font-weight: 600;
-    transition: all 0.3s ease;
+    color: white;
+    letter-spacing: 0.5px;
+}
+
+/* Search Bar (Centered) */
+/* Adding this now so it's ready when you add the input to TopBar.tsx */
+.header__search-container {
+    flex: 0 1 400px; /* Grows but stays centered */
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 1); /* Solid white in your screenshot */
+    border-radius: 4px;
+    padding: 4px 12px;
+    height: 32px;
+}
+
+.header__search-container input {
+    border: none;
+    background: transparent;
+    width: 100%;
     outline: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding-left: 8px;
+    font-size: 14px;
 }
 
-.theme-button:hover {
-    background-color: var(--btn-secondary-hover-bg);
-    border-color: var(--hover-color);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+/* Action Icons (Right Side) */
+.header__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.theme-button:active {
-    transform: translateY(0);
+.header__icon-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    transition: background-color 0.1s;
 }
 
-/* Specific icon styling if needed */
-.theme-button span {
-    font-size: 1.1rem;
-    line-height: 1;
+.header__icon-btn:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* Subtle dark hover */
+}
+
+/* User Profile Icon */
+.header__user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-left: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }

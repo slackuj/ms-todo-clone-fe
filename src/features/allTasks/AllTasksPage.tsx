@@ -6,6 +6,8 @@ import {useGetTasksQuery} from "../../api/apiSlice.ts";
 
 export const AllTasksPage = () => {
     useModalGuard();
+    // this can be simplified by creating memoized selectors using createSelector
+    // explore later
     const {
         data: tasks = [],
         isLoading,

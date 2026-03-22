@@ -12,7 +12,7 @@ interface TasksToolBarProps {
     listTitle: string;
 }
 
-const TITLE_ICON: Readonly<Record<string, ReactNode>> ={
+export const TITLE_ICON: Readonly<Record<string, ReactNode>> ={
     "My Day": <WiDaySunny/>,
     "Important": <GoStar/>,
     "Planned": <TbCalendarWeek/>,

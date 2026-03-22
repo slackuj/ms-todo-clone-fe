@@ -22,45 +22,94 @@
 
 /* Sidebar Rules */
 
+/* Sidebar Container */
 .sidebar {
-    background-color: var(--bg-sidebar);
-    color: var(--text-main);
-    padding: 20px;
+    background-color: var(--bg-sidebar, #f4f4f4);
+    color: var(--text-main, #333);
     width: 250px;
-    min-height: 100vh;
-    /* Make sidebar full height */
+    height: calc(100vh - 50px); /* Adjust based on your TopBar height */
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
+    padding: 10px 0; /* Vertical padding only */
     flex-shrink: 0;
+    border-right: 1px solid #edebe9;
 }
 
+/* List Reset */
 .sidebar ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
+/* NavLink Reset */
+.sidebar a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+/* Sidebar List Item */
 .sidebar li {
-    margin-bottom: 15px;
     display: flex;
-    /* Use Flexbox for alignment */
     align-items: center;
-    /* Vertically align items */
-    color: var(--text-main);
-    font-size: 20px;
-    padding: 10px 15px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+    padding: 10px 20px;
+    font-size: 14px; /* Standard UI size */
+    transition: background-color 0.2s ease;
     cursor: pointer;
+    position: relative;
 }
 
 .sidebar li:hover {
-    background-color: var(--hover-color);
+    background-color: var(--hover-color, #ececec);
 }
 
-.active li {
-    background-color: #20B2AA;
+/* React Router Active State */
+.sidebar a.active li {
+    background-color: #eff6fc; /* Light blue tint for active */
+    font-weight: 600;
+    color: #0078d4; /* Primary blue color */
+}
+
+/* Left Accent Bar for Active Item */
+.sidebar a.active li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    bottom: 10px;
+    width: 3px;
+    background-color: #0078d4;
+}
+
+/* Icons and Titles */
+.page-icon {
+    margin-right: 15px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.page-title {
+    flex-grow: 1; /* Pushes the badge to the right */
+}
+
+/* Task Count Badges */
+.task-count {
+    font-size: 12px;
+    color: #605e5c;
+    font-weight: 400;
+}
+
+/* Style for the 'New list' button area if needed */
+.sidebar .new-list-btn {
+    margin-top: auto; /* Push to bottom */
+    padding: 15px 20px;
+    border-top: 1px solid #edebe9;
+    color: #0078d4;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 /* ---------------------------------------------------------- */
 

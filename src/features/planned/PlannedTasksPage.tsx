@@ -14,12 +14,15 @@ export const PlannedTasksPage = () => {
         isError,
         error
     } = useGetTasksQuery();
+
+    // planned tasks are pending tasks
+    const plannedTasks = tasks.filter((task) => !task.isCompleted);
     return (
         <div className="page-content">
             <TasksToolBar listTitle="Tasks"/>
             <TaskAdder />
             <TasksGrid
-                tasks={tasks}
+                tasks={plannedTasks}
                 isLoading={isLoading}
                 isError={isError}
                 isSuccess={isSuccess}

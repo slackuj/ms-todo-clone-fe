@@ -1,6 +1,5 @@
 import './TopBar.css';
 import {NavLink} from "react-router";
-import {ThemeButton} from "./ThemeButton.tsx";
 import { IoApps } from "react-icons/io5";
 
 /*interface TopBarProps {
@@ -20,7 +19,7 @@ export const TopBar = (/*{title} : TopBarProps*/) => {
                 />
                 <span className="header__title">To Do{/*{title}*/}</span>
             </NavLink>
-            <ThemeButton/>
+            {/*<ThemeButton/>*/}
         </header>
         </div>
     );
