@@ -96,3 +96,6 @@
     to { width: 360px; opacity: 1; }
 }
 
+.delete-btn, .delete-step-btn{
+    cursor: pointer;
+}

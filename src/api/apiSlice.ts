@@ -180,7 +180,7 @@ export const apiSlice = createApi({
             async onQueryStarted(id, lifecycleApi) {
                 const patchDeletionResult = lifecycleApi.dispatch(
                     apiSlice.util.updateQueryData('getTasks', undefined, draft => {
-                        return draft.filter(post => post.id !== id);
+                        return draft.filter(task => task.id !== id);
                     })
                 );
                 try {

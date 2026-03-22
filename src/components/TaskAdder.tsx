@@ -11,20 +11,12 @@ export const TaskAdder = () => {
 
     const handleAddNewTask = async () => {
         try {
-            if (dueDate) {
             await addNewTask({
                 title: taskTitle,
-                dueDate: dueDate.getTime(),
+                dueDate: dueDate?.getTime(),
                 isImportant: false,
                 isCompleted: false
             });
-            } else {
-                await addNewTask({
-                    title: taskTitle,
-                    isImportant: false,
-                    isCompleted: false
-                })
-            }
         } catch (error) {
             console.log('failed to add new task', error);
         }

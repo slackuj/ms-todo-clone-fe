@@ -8,6 +8,7 @@ import {PlannedTasksPage} from "./features/planned/PlannedTasksPage.tsx";
 import {AssignedTasksPage} from "./features/assigned/AssignedTasksPage.tsx";
 import {AllTasksPage} from "./features/allTasks/AllTasksPage.tsx";
 import {Modal} from "./components/Modal.tsx";
+import {DialogModal} from "./components/DialogModal.tsx";
 
 export const App = () => {
 
@@ -29,6 +30,7 @@ export const App = () => {
               <Modal />
               </div>
           </div>
+          <DialogModal />
       </>
   )
 };

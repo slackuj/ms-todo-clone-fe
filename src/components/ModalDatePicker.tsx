@@ -2,13 +2,22 @@ import { TbCalendarWeek } from "react-icons/tb";
 import './DatePicker.css';
 import {GrClose} from "react-icons/gr";
 import {useFocusedTask} from "../api/apiSlice.ts";
+import {useTasksUpdater} from "../hooks/hooks.ts";
+import React from "react";
 
 export const ModalDatePicker = () => {
 
+    const { updateTaskDueDate } = useTasksUpdater();
     const { task } = useFocusedTask();
     if (!task) {
         return null;
     }
+
+    const handleDateChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        const dueDate = value ? new Date(value).getTime() : undefined;
+        await updateTaskDueDate(task.id, dueDate);
+    };
     // Convert Date object to YYYY-MM-DD string for the input
     const dateToString = (date: Date | undefined): string => {
         if (!date) return "";
@@ -54,10 +63,7 @@ export const ModalDatePicker = () => {
                     className="hidden-date-input"
                     defaultValue={dateToString( task.dueDate ? new Date(task.dueDate) : undefined )}
                     min={todayStr} // Blocks selection of past dates
-                    /*onChange={(e) => {
-                        const val = e.target.value;
-                        onDateChange(val ? new Date(val) : undefined);
-                    }}*/
+                    onChange={handleDateChange}
                 />
             </div>
                 <span className="display-date-text">

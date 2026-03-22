@@ -1,7 +1,7 @@
 import React, {useEffect } from 'react';
 import {createPortal} from 'react-dom';
 import './Modal.css';
-import {useAppDispatch, useAppSelector, useTasksUpdater} from "../hooks/hooks.ts";
+import {useAppDispatch, useAppSelector, useModal, useTasksUpdater} from "../hooks/hooks.ts";
 import {closeModal, selectIsModalOpen} from "../store/slices/modalsSlice.ts";
 import {Steps} from "./Steps.tsx";
 import {ModalDatePicker} from "./ModalDatePicker.tsx";
@@ -26,9 +26,15 @@ export const Modal = () => {
     }, []);
     const isOpen = useAppSelector(selectIsModalOpen);
     const dispatch = useAppDispatch();
+
     const {
         updateTaskTitle,
     } = useTasksUpdater();
+
+    const {
+        toggleDialogBox
+    } = useModal();
+
     const { task } = useFocusedTask();
     if (!task) {
         return null;
@@ -39,6 +45,10 @@ export const Modal = () => {
         if (title && title !== task.title) {
             await updateTaskTitle(task.id, title);
         }
+    };
+
+    const handleDeletion = () => {
+        toggleDialogBox(undefined);
     };
 
 
@@ -72,7 +82,11 @@ export const Modal = () => {
                 </div>
                 <div className="modal-footer">
                     <LuPanelRightClose />
-                    <RiDeleteBin6Line />
+                    <RiDeleteBin6Line
+                        className="delete-btn"
+                        onClick={handleDeletion}
+                        title="Delete task"
+                    />
                 </div>
             </div>
         </div>,

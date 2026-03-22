@@ -2,7 +2,7 @@
 
 import React, {type ChangeEvent, type ReactNode, useState} from "react";
 import {IoAdd} from "react-icons/io5";
-import {useTasksUpdater} from "../hooks/hooks.ts";
+import {useModal, useTasksUpdater} from "../hooks/hooks.ts";
 import {GrClose} from "react-icons/gr";
 import type {Step} from "../types/tasks";
 import {CompletionBtn} from "./CompletionBtn.tsx";
@@ -57,11 +57,12 @@ interface StepProps {
 }
 const Step = ({step}: StepProps) => {
 
+    const { toggleDialogBox } = useModal();
     const { updateStepTitle } = useTasksUpdater();
     const { task } = useFocusedTask();
     if (!task) return null;
-    const handleStepTitle = async (e: React.FocusEvent<HTMLSpanElement>) => {
 
+    const handleStepTitle = async (e: React.FocusEvent<HTMLSpanElement>) => {
         const title = e.target.textContent?.trim();
         // if title === empty , call warning dialog for deletion
         // else update title
@@ -69,6 +70,11 @@ const Step = ({step}: StepProps) => {
             await updateStepTitle(task, step.id, title);
         }
     };
+
+    const handleDeletion = () => {
+        toggleDialogBox(step.id);
+    };
+
     const stepClassname = classnames('step-completed-title', { disabled: !step.isCompleted});
 
     return (
@@ -82,7 +88,11 @@ const Step = ({step}: StepProps) => {
                 onBlur={handleStepTitle}
                 /*onChange={handleStepTitle}*/
             >{step.title}</span>
-            <GrClose />
+            <GrClose
+                className="delete-step-btn"
+                onClick={handleDeletion}
+                title="Delete step"
+            />
         </div>
     );
 };

@@ -21,7 +21,7 @@ export interface ServerTask extends BaseTask {
 
 // task in Redux Store
 export interface Task extends BaseTask {
-    dueDate?: number; // Unix Timestamp !!!
+    dueDate: number | undefined; // Unix Timestamp !!!
 }
 export type NewTask = Omit<Task, 'id'>;
 export type TaskUpdate = Partial<NewTask>;

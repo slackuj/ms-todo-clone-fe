@@ -1,7 +1,12 @@
 // this file serves as a central hub for re-exporting pre-typed Redux hooks
 import type {AppDispatch, RootState} from "../store/store.ts";
 import {useDispatch, useSelector} from "react-redux";
-import {closeModal} from "../store/slices/modalsSlice.ts";
+import {
+    closeModal,
+    selectFocusedStepId,
+    selectIsDialogModalOpen,
+    toggleDialogModal
+} from "../store/slices/modalsSlice.ts";
 import {useEffect} from "react";
 import {useEditTaskMutation} from "../api/apiSlice.ts";
 import type {Step, Task, TaskUpdateArgs} from "../types/tasks.ts";
@@ -15,6 +20,24 @@ export const useModalGuard = () => {
         dispatch(closeModal());
     });
 };
+
+export const useModal = () => {
+    const dispatch = useAppDispatch();
+    const focusedStepId = useAppSelector(selectFocusedStepId);
+
+    const deletingStep = !!focusedStepId;
+    const isDialogBoxOpen = useAppSelector(selectIsDialogModalOpen);
+    const toggleDialogBox = (stepId: string | undefined) => {
+        dispatch(toggleDialogModal(stepId));
+    };
+
+    return{
+        deletingStep,
+        focusedStepId,
+        isDialogBoxOpen,
+        toggleDialogBox
+    };
+}
 
 export const useTasksUpdater = () => {
 
@@ -38,6 +61,10 @@ export const useTasksUpdater = () => {
 
     const updateTaskTitle = async (taskId: string, title: string) => {
         await UpdateTask({ id: taskId, modifiedData: { title: title } });
+    };
+
+    const updateTaskDueDate = async (taskId: string, date: number | undefined) => {
+        await UpdateTask({ id: taskId, modifiedData: { dueDate: date } });
     };
 
     const updateStepTitle = async (task: Task, stepId: string, stepTitle: string) => {
@@ -79,6 +106,7 @@ export const useTasksUpdater = () => {
     return {
         toggleTaskCompletion,
         updateTaskTitle,
+        updateTaskDueDate,
         toggleTaskImportance,
         addNewStep,
         updateStepTitle,
