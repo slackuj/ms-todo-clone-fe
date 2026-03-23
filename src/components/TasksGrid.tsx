@@ -8,6 +8,7 @@ import {CompletionBtn} from "./CompletionBtn.tsx";
 import {ImportanceBtn} from "./ImportanceBtn.tsx";
 import type {SerializedError} from "@reduxjs/toolkit";
 import type {FetchBaseQueryError} from "@reduxjs/toolkit/query";
+import {Spinner} from "./Spinner.tsx";
 
 interface GridRowProps {
     task: Task;
@@ -58,7 +59,7 @@ interface TaskGridProps {
 export const TasksGrid = (props: TaskGridProps) => {
     let gridRows: ReactNode;
     if(props.isLoading) {
-        gridRows = <div>Loading...</div>;
+        gridRows = (<Spinner text="Loading ..."/> );
     } else if (props.isSuccess) {
     //    console.log(tasks);
     // dissociate tasks into tasks having due date and the others
@@ -75,6 +76,7 @@ export const TasksGrid = (props: TaskGridProps) => {
     gridRows = renderedNotDueDatedTasks.concat(renderedDueDatedTasks);
     } else if (props.isError && props.error) {
         gridRows = <div>{props.error.toString()}</div>
+        // display toast or error instead !!!
     }
     return (
         <div className="grid-container">

@@ -51,7 +51,7 @@ export const Modal = () => {
 
     const handleTaskNote = async(e: React.FocusEvent<HTMLTextAreaElement>) => {
         const note = e.currentTarget.value?.trim();
-        if (note && note !== task.note) {
+        if (note !== task.note) {
             await updateTaskNote(task.id, note);
         }
     };
@@ -94,9 +94,8 @@ export const Modal = () => {
                         onBlur={handleTaskNote}
                         autoCorrect="on"
                         autoComplete="on"
-                    >
-                        {task.note}
-                    </textarea>
+                        defaultValue={task.note}
+                    />
                 </div>
                 <div className="modal-footer">
                     <LuPanelRightClose
