@@ -1,6 +1,3 @@
-/* DialogModal.css */
-
-/* The full-screen dimming effect */
 .dialog-modal-overlay {
     position: fixed;
     top: 0;
@@ -11,11 +8,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 3000; /* Ensure it's above the Sidebar/Modal-root */
+    z-index: 3000;
     backdrop-filter: blur(1px);
 }
 
-/* The actual white box */
 .dialog-modal-content {
     background: white;
     width: 90%;
@@ -29,7 +25,6 @@
     animation: dialogPop 0.2s ease-out;
 }
 
-/* Header Text */
 .dialog-header {
     font-size: 18px;
     font-weight: 600;
@@ -37,27 +32,23 @@
     line-height: 24px;
 }
 
-/* Subtext */
 .dialog-description {
     font-size: 14px;
     color: #605e5c;
     line-height: 20px;
 }
 
-/* Footer Container */
 .dialog-footer {
     margin-top: 8px;
     display: flex;
     justify-content: flex-end;
 }
 
-/* Button Group */
 .action-dialog-btns {
     display: flex;
     gap: 8px;
 }
 
-/* Base Button Styles */
 .dialog-btn {
     padding: 0 16px;
     height: 32px;
@@ -72,7 +63,6 @@
     justify-content: center;
 }
 
-/* Cancel / Gray Button */
 .dialog-btn.gray {
     background: white;
     border-color: #8a8886;
@@ -83,7 +73,6 @@
     background: #f3f2f1;
 }
 
-/* Delete / Red Button */
 .dialog-btn.red {
     background: #a4262c;
     color: white;
@@ -93,7 +82,6 @@
     background: #8e1f25;
 }
 
-/* Quick entrance animation */
 @keyframes dialogPop {
     from {
         opacity: 0;

@@ -20,3 +20,24 @@
     color: #2564cf;
     cursor: pointer;
 }
+.completion-btn-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
+
+.task-incomplete-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.task-complete-circle,
+.task-incomplete-circle,
+.task-incomplete-hover-circle {
+    font-size: 20px;
+    flex-shrink: 0;
+}

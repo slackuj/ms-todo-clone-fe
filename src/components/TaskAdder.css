@@ -35,13 +35,12 @@
     opacity: 0.8;
 }
 
-/* Bottom section: Icons on left, 'Add' button on right */
 .taskActions-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 8px 16px;
-    background-color: #faf9f8; /* Slightly darker bottom bar */
+    background-color: #faf9f8;
     border-top: 1px solid #f3f2f1;
     border-radius: 0 0 4px 4px;
 }
@@ -51,7 +50,6 @@
     gap: 8px;
 }
 
-/* Individual icon buttons (Date/Reminder) */
 .dateButton, .reminderButton {
     background: transparent;
     border: none;
@@ -71,11 +69,10 @@
     color: #323130;
 }
 
-/* The primary 'Add' button */
 .addTaskButton {
     background-color: #ffffff;
     border: 1px solid #edebe9;
-    color: #a19f9d; /* Starts greyed out until typing */
+    color: #a19f9d;
     padding: 4px 12px;
     font-size: 12px;
     font-weight: 600;

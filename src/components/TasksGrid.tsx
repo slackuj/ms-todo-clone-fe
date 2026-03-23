@@ -39,7 +39,7 @@ const GridRow = (props: GridRowProps) => {
 
     return (
         <div className="grid-row" key={props.task.id}>
-            <div><CompletionBtn task={props.task} /></div>
+            <CompletionBtn task={props.task} />
             <div className={titleClassname} onClick={handleFocusTask}>{props.task.title}</div>
             <div>{props.task.dueDate ? dueDate : ''}</div>
             <div><ImportanceBtn task={props.task} /></div>

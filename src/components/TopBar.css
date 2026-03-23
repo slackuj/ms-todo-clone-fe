@@ -1,4 +1,3 @@
-/* Container styling from TopBar.tsx */
 .topbar {
     width: 100%;
     z-index: 100;
@@ -8,19 +7,18 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 48px; /* Standard Office 365 header height */
+    height: 48px;
     padding: 0 16px;
-    background-color: #2564cf; /* Microsoft Blue */
+    background-color: #2564cf;
     color: white;
 }
 
-/* Logo and Title Section */
 .app-header a {
     display: flex;
     align-items: center;
     text-decoration: none;
     gap: 12px;
-    min-width: 234px; /* Matches sidebar width minus padding */
+    min-width: 234px;
 }
 
 .header__title {
@@ -30,13 +28,11 @@
     letter-spacing: 0.5px;
 }
 
-/* Search Bar (Centered) */
-/* Adding this now so it's ready when you add the input to TopBar.tsx */
 .header__search-container {
-    flex: 0 1 400px; /* Grows but stays centered */
+    flex: 0 1 400px;
     display: flex;
     align-items: center;
-    background-color: rgba(255, 255, 255, 1); /* Solid white in your screenshot */
+    background-color: rgba(255, 255, 255, 1);
     border-radius: 4px;
     padding: 4px 12px;
     height: 32px;
@@ -51,7 +47,6 @@
     font-size: 14px;
 }
 
-/* Action Icons (Right Side) */
 .header__actions {
     display: flex;
     align-items: center;
@@ -72,10 +67,9 @@
 }
 
 .header__icon-btn:hover {
-    background-color: rgba(0, 0, 0, 0.1); /* Subtle dark hover */
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
-/* User Profile Icon */
 .header__user-avatar {
     width: 32px;
     height: 32px;

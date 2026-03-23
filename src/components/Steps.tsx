@@ -8,6 +8,7 @@ import type {Step} from "../types/tasks";
 import {CompletionBtn} from "./CompletionBtn.tsx";
 import classnames from "classnames";
 import {useFocusedTask} from "../api/apiSlice.ts";
+import './Steps.css';
 
 const StepsAdder = () => {
     const [stepTitle, setStepTitle] = useState("");

@@ -11,6 +11,7 @@ import {useEffect} from "react";
 import {useEditTaskMutation} from "../api/apiSlice.ts";
 import type {Step, Task, TaskUpdateArgs} from "../types/tasks.ts";
 
+
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 export const useAppSelector = useSelector.withTypes<RootState>();
 
@@ -18,7 +19,7 @@ export const useModalGuard = () => {
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(closeModal());
-    });
+    }, []);
 };
 
 export const useModal = () => {
@@ -103,9 +104,6 @@ export const useTasksUpdater = () => {
 
     const toggleStepCompletion = async (task: Task, stepId: string) => {
         const updatedSteps = task.steps?.map((step) =>
-            // IF I AM NOT WRONG !!! --- CHECK AND UPDATE IF OTHERWISE
-            // !!step.isCompleted not required here, because in backend-> schema: step.isCompleted.default(false) forces to return steps.isCompleted as false
-            // similar to the response obtained for task.isCompleted and task.isImportant, as observed till now !!!
             step.id === stepId ? { ...step, isCompleted: !step.isCompleted } : step);
         if (updatedSteps){
             await UpdateTask({ id: task.id, modifiedData: { steps: updatedSteps } });

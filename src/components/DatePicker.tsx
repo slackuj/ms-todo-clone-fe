@@ -49,7 +49,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
                     type="date"
                     className="hidden-date-input"
                     value={dateToString(selectedDate)}
-                    min={todayStr} // Blocks selection of past dates
+                    min={todayStr}
                     onChange={(e) => {
                         const val = e.target.value;
                         onDateChange(val ? new Date(val) : undefined);

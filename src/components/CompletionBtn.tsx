@@ -3,6 +3,8 @@ import {GoCheckCircle, GoCheckCircleFill, GoCircle} from "react-icons/go";
 import {useTasksUpdater} from "../hooks/hooks.ts";
 import type {Step, Task} from "../types/tasks.ts";
 import './CompletionBtn.css';
+import useSound from 'use-sound';
+import successSfx from '../assets/sounds/completed.mp3';
 
 interface CompletionBtnProps {
     task: Task;
@@ -11,6 +13,7 @@ interface CompletionBtnProps {
 
 export const CompletionBtn = (props: CompletionBtnProps) => {
 
+    const [play] = useSound(successSfx, { volume: 0.5 });
     const {
         toggleTaskCompletion,
         toggleStepCompletion
@@ -19,8 +22,10 @@ export const CompletionBtn = (props: CompletionBtnProps) => {
     const handleCompletion = async () => {
         if (props.step) {
             await toggleStepCompletion(props.task, props.step.id);
+            if (!props.step.isCompleted) play();
         } else {
             await toggleTaskCompletion(props.task);
+            if (!props.task.isCompleted) play();
         }
     };
     const TASK_COMPLETE_ICON = new Map<Boolean, ReactNode>([
@@ -39,8 +44,8 @@ export const CompletionBtn = (props: CompletionBtnProps) => {
         btn = TASK_COMPLETE_ICON.get(props.task.isCompleted);
     }
     return (
-        <>
+        <div className="completion-btn-container">
             {btn}
-        </>
+        </div>
     );
 };

@@ -1,0 +1,83 @@
+.steps-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.stepTitle-container {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    gap: 12px;
+    border-bottom: 1px solid #f3f2f1;
+    transition: background-color 0.1s ease;
+}
+
+.stepTitle-container:hover {
+    background-color: #f3f2f1;
+}
+
+.step-title {
+    flex: 1;
+    font-size: 14px;
+    color: #323130;
+    border: none;
+    background: transparent;
+    outline: none;
+    padding: 4px 0;
+    cursor: text;
+}
+
+.step-completed-title {
+    text-decoration: line-through;
+    color: #a19f9d;
+}
+
+.step-completed-title.disabled {
+    text-decoration: none;
+    color: #323130;
+}
+
+.delete-step-btn {
+    color: #605e5c;
+    font-size: 14px;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.2s;
+    cursor: pointer;
+}
+
+.stepTitle-container:hover .delete-step-btn {
+    opacity: 1; /* Show delete icon on row hover */
+}
+
+.delete-step-btn:hover {
+    color: #a4262c;
+}
+
+.stepAdder-container {
+    margin-top: 4px;
+}
+
+.add-step-icon {
+    font-size: 20px;
+    color: #2564cf;
+}
+
+.step-title::placeholder {
+    color: #2564cf;
+    font-weight: 400;
+}
+
+.addStepButton {
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0 4px;
+    color: #2564cf;
+}
+
+.addStepButton:hover {
+    text-decoration: underline;
+}
